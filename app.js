@@ -1,14 +1,13 @@
+/*eslint no-unused-vars: "error"*/
+
 var map;
 
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 25.789776, lng: -80.144386},
-        zoom: 13
-    });
-}
+// Create a new blank array for all the listing markers.
+var markers = [];
+
 
 //These are the South Beach locations that will be shown to the user.
-var locations = [
+var initialLocations = [
     {
         name: 'Meat Market',
         address: '915 Lincoln Rd, Miami Beach, FL 33139',
@@ -38,13 +37,116 @@ var locations = [
         name: 'South Pointe Pier',
         address: '1 Washington Ave, Miami Beach, FL 33139',
         location: {lat: 25.763782, lng: -80.130180}
+    },
+    {
+        name: 'The Filmore Miami Beach',
+        address: '1700 Washington Ave, Miami Beach, FL 33139',
+        location: {lat: 25.792922, lng: -80.133085}
+    },
+    {
+        name: 'Yardbird Southern Table & Bar',
+        address: '1600 Lenox Ave, Miami Beach, FL 33139',
+        location: {lat: 25.789117, lng: -80.140205}
+    },
+    {
+        name: 'Flamingo Park',
+        address: '1200 Meridian Ave, Miami Beach, FL 33139',
+        location: {lat: 25.783964, lng: -80.137317}
+    },
+    {
+        name: "Joe's Stone Crab",
+        address: '11 Washington Ave, Miami Beach, FL 33139',
+        location: {lat: 25.768871, lng: -80.135259}
     }
 ];
 
 
 
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 25.790705, lng: -80.137989},
+        zoom: 14
+    });
+
+    var largeInfowindow = new google.maps.InfoWindow();
+    var bounds = new google.maps.LatLngBounds();
+
+
+    // The following group uses the location array to create an array of markers on initialize.
+    for (var i = 0; i < initialLocations.length; i++) {
+        
+        // Get the position from the location array.
+        var position = initialLocations[i].location;
+        var title = initialLocations[i].name;
+
+        // Create a marker per location, and put into markers array.
+        var marker = new google.maps.Marker({
+            map: map,
+            position: position,
+            title: title,
+            animation: google.maps.Animation.DROP,
+            id: i
+          });
+
+        // Push the marker to our array of markers.
+        markers.push(marker);
+
+        // Create an onclick event to open an infowindow at each marker.
+        marker.addListener('click', function() {
+            populateInfoWindow(this, largeInfowindow);
+        });
+
+        bounds.extend(markers[i].position);
+    }
+
+        // Extend the boundaries of the map for each marker
+        map.fitBounds(bounds);
+}
+
+
+function populateInfoWindow(marker, infowindow) {
+    // Check to make sure the infowindow is not already opened on this marker.
+    if (infowindow.marker != marker) {
+      infowindow.marker = marker;
+      infowindow.setContent('<div>' + marker.title + '</div>');
+      infowindow.open(map, marker);
+      
+      // Make sure the marker property is cleared if the infowindow is closed.
+      infowindow.addListener('closeclick',function(){
+        infowindow.setMarker = null;
+      });
+    }
+}
+
+// Location Model
+var Location = function(data) {
+    this.name = ko.observable(data.name);
+    this.address = ko.observable(data.address);
+    this.lat = ko.observable(data.location.lat);
+    this.lng = ko.observable(data.location.lng);
+};
+
+// Use knockout to show the locations
 var ViewModel = function() {
-    this.name = ko.observable('');
+    var self = this;
+
+    self.locationList = ko.observableArray([]);
+    self.query = ko.observable('');
+
+    initialLocations.forEach(function(data) {
+        self.locationList.push(new Location(data));
+    });
+
+    self.filteredLocations = ko.computed(function() {
+        if (!self.query()) {
+            return self.locationList();
+        } else {
+            return self.locationList()
+            .filter(location => location.name().toLowerCase().indexOf(self.query().toLowerCase()) > -1);
+        }
+    })
+
 };
 
 ko.applyBindings(new ViewModel());
