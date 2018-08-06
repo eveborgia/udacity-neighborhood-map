@@ -61,8 +61,6 @@ var initialLocations = [
 ];
 
 
-
-
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 25.790705, lng: -80.137989},
@@ -87,7 +85,16 @@ function initMap() {
             title: title,
             animation: google.maps.Animation.DROP,
             id: i
-          });
+        });
+
+        // bounce the marker
+        // function toggleBounce() {
+        //     if (marker.getAnimation() !== null) {
+        //       marker.setAnimation(null);
+        //     } else {
+        //       marker.setAnimation(google.maps.Animation.BOUNCE);
+        //     }
+        // }
 
         // Push the marker to our array of markers.
         markers.push(marker);
@@ -103,6 +110,7 @@ function initMap() {
         // Extend the boundaries of the map for each marker
         map.fitBounds(bounds);
 }
+
 
 
 function populateInfoWindow(marker, infowindow) {
