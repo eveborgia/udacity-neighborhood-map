@@ -10,52 +10,62 @@ var markers = [];
 var initialLocations = [
     {
         name: 'Meat Market',
-        address: '915 Lincoln Rd, Miami Beach, FL 33139',
+        address: '915 Lincoln Rd,',
+        city: 'Miami Beach, FL 33139',
         location: {lat: 25.790705, lng: -80.137989}
     },
     {
         name: 'NaiYaRa',
-        address: '1854 Bay Rd, Miami Beach, FL 33139',
+        address: '1854 Bay Rd,',
+        city: 'Miami Beach, FL 33139',
         location: {lat: 25.794467, lng: -80.144040}
     },
     {
         name: 'Regal Cinemas South Beach 18 & IMAX',
-        address: '1120 Lincoln Rd, Miami Beach, FL 33139',
+        address: '1120 Lincoln Rd,',
+        city: 'Miami Beach, FL 33139',
         location: {lat: 25.790219, lng: -80.140988}
     },
     {
         name: 'Nikki Beach Miami',
-        address: '1 Ocean Dr, Miami Beach, FL 33139',
+        address: '1 Ocean Dr,',
+        city: 'Miami Beach, FL 33139',
         location: {lat: 25.769013, lng: -80.132246}
     },
     {
         name: 'New World Center',
-        address: '500 17th St, Miami Beach, FL 33139',
+        address: '500 17th St,',
+        city: 'Miami Beach, FL 33139',
         location: {lat: 25.791650, lng: -80.133487}
     },
     {
         name: 'South Pointe Pier',
-        address: '1 Washington Ave, Miami Beach, FL 33139',
+        address: '1 Washington Ave,',
+        city: 'Miami Beach, FL 33139',
         location: {lat: 25.763782, lng: -80.130180}
     },
     {
         name: 'The Filmore Miami Beach',
-        address: '1700 Washington Ave, Miami Beach, FL 33139',
+        address: '1700 Washington Ave,',
+        city: 'Miami Beach, FL 33139',
         location: {lat: 25.792922, lng: -80.133085}
     },
     {
         name: 'Yardbird Southern Table & Bar',
-        address: '1600 Lenox Ave, Miami Beach, FL 33139',
+        address: '1600 Lenox Ave,',
+        city: 'Miami Beach, FL 33139',
         location: {lat: 25.789117, lng: -80.140205}
     },
     {
         name: 'Flamingo Park',
-        address: '1200 Meridian Ave, Miami Beach, FL 33139',
+        address: '1200 Meridian Ave,',
+        city: 'Miami Beach, FL 33139',
         location: {lat: 25.783964, lng: -80.137317}
     },
     {
         name: "Joe's Stone Crab",
-        address: '11 Washington Ave, Miami Beach, FL 33139',
+        address: '11 Washington Ave,',
+        city: 'Miami Beach, FL 33139',
         location: {lat: 25.768871, lng: -80.135259}
     }
 ];
@@ -77,12 +87,16 @@ function initMap() {
         // Get the position from the location array.
         var position = initialLocations[i].location;
         var title = initialLocations[i].name;
+        var address = initialLocations[i].address;
+        var city = initialLocations[i].city;
 
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
             map: map,
             position: position,
             title: title,
+            address: address,
+            city: city,
             animation: google.maps.Animation.DROP,
             id: i
         });
@@ -117,7 +131,7 @@ function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
       infowindow.marker = marker;
-      infowindow.setContent('<div>' + marker.title + '</div>');
+      infowindow.setContent('<div>' + '<strong>' + marker.title + '</strong>' +'</div>' + '<div>' + marker.address + '</div>' + '<div>' + marker.city + '</div>');
       infowindow.open(map, marker);
       
       // Make sure the marker property is cleared if the infowindow is closed.
