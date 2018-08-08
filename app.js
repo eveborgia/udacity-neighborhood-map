@@ -6,6 +6,8 @@ var map;
 var markers = [];
 
 
+
+
 //These are the South Beach locations that will be shown to the user.
 var initialLocations = [
     {
@@ -164,11 +166,77 @@ var ViewModel = function() {
         if (!self.query()) {
             return self.locationList();
         } else {
-            return self.locationList()
-            .filter(location => location.name().toLowerCase().indexOf(self.query().toLowerCase()) > -1);
+            var updatedLocation = self.locationList().filter(location => location.name().toLowerCase().indexOf(self.query().toLowerCase()) > -1);
+            updateMap(updatedLocation);
+            return updatedLocation;
         }
     })
-
 };
 
+function updateMap(updatedLocation) {
+    deleteMarkers();
+
+    var largeInfowindow = new google.maps.InfoWindow();
+    var bounds = new google.maps.LatLngBounds();
+
+    // console.log(updatedLocation);
+    for (var i = 0; i < updatedLocation.length; i++) {
+        //Get the position from the location array.
+        var position = updatedLocation[i].location;
+        var title = updatedLocation[i].title;
+        var address = updatedLocation[i].address;
+        var city = updatedLocation[i].city;
+        // console.log(updatedLocation[i]);
+
+            //Create a marker per location, and put into markers array.
+    var marker = new google.maps.Marker({
+        map: map,
+        position: position,
+        title: title,
+        address: address,
+        city: city,
+        animation: google.maps.Animation.DROP,
+        id: i
+    });
+
+                // Push the marker to our array of markers.
+                markers.push(marker);
+
+                // Create an onclick event to open an infowindow at each marker.
+                marker.addListener('click', function() {
+                    populateInfoWindow(this, largeInfowindow);
+                });
+        
+                bounds.extend(markers[i].position);
+    }
+
+// Extend the boundaries of the map for each marker
+        map.fitBounds(bounds);
+
+}
 ko.applyBindings(new ViewModel());
+
+
+//https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+    // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
+        }
+      }
+
+      // Removes the markers from the map, but keeps them in the array.
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+
+      // Shows any markers currently in the array.
+      function showMarkers() {
+        setMapOnAll(map);
+      }
+
+      // Deletes all markers in the array by removing references to them.
+      function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+      }
