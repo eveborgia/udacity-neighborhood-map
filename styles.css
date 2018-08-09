@@ -1,7 +1,92 @@
 html, body { height: 100%; margin: 0; padding: 0; }
 
-#map { height: 100%; }
+#map { height: 100%; text-align: center; width:100%; }
+#toggle { display: none; }
 
-#map-col {
-    min-height: 600px
+
+/* Hamburger
+* Credit: https://codepen.io/vinsongrant/post/css-only-hamburger-animation
+*/
+.hamburger {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    height: 45px;
+    z-index: 5;
+    background-color: #AE80FA;
+    color: #fff;
+    cursor: pointer;
+    padding: 24px;
 }
+
+.hamburger div {
+    position: relative;
+    width: 3em;
+    height: 7px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    margin-top: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+
+/**
+Animations
+**/
+#toggle:checked + .hamburger .top-bun {
+    transform: rotate(-45deg);
+    margin-top: 25px;
+  }
+#toggle:checked + .hamburger .bottom-bun {
+    opacity: 0;
+    transform: rotate(45deg);
+  }
+#toggle:checked + .hamburger .meat {
+    transform: rotate(45deg);
+    margin-top: -7px;
+  }
+
+
+
+
+/* Menu */
+
+/* hide the checkbox */
+.hidden-menu-checkbox {
+    display: none;
+}
+
+/* Menu */
+.hidden-menu {
+    display: block;
+    position: fixed;
+    margin: 0;
+    box-sizing: border-box;
+    width: 300px;
+    background-color: #eee;
+    height: 100%;
+    padding-top:100px;
+    top: 0;
+    left: -300px;
+    transition: left .2s;
+    z-index: 2;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
+
+.hidden-menu h2 {
+    text-align: center;
+}
+
+.hidden-menu input {
+    display: block;
+    font-size: 16px;
+    margin: auto;
+    padding: 4px;
+    text-align: center;
+}
+
+/*  show menu when hamburger clicked  */
+#toggle:checked ~ .hidden-menu {
+    left: 0;
+  }
