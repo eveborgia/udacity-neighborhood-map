@@ -14,61 +14,72 @@ var initialLocations = [
         name: 'Meat Market',
         address: '915 Lincoln Rd,',
         city: 'Miami Beach, FL 33139',
-        location: {lat: 25.790705, lng: -80.137989}
+        lat: 25.790705,
+        lng: -80.137989
     },
     {
         name: 'NaiYaRa',
         address: '1854 Bay Rd,',
         city: 'Miami Beach, FL 33139',
-        location: {lat: 25.794467, lng: -80.144040}
+        location: {lat: 25.794467, lng: -80.144040},
+        lat: 25.794467,
+        lng: -80.144040
     },
     {
         name: 'Regal Cinemas South Beach 18 & IMAX',
         address: '1120 Lincoln Rd,',
         city: 'Miami Beach, FL 33139',
-        location: {lat: 25.790219, lng: -80.140988}
+        lat: 25.790219,
+        lng: -80.140988
     },
     {
         name: 'Nikki Beach Miami',
         address: '1 Ocean Dr,',
         city: 'Miami Beach, FL 33139',
-        location: {lat: 25.769013, lng: -80.132246}
+        lat: 25.769013,
+        lng: -80.132246
     },
     {
         name: 'New World Center',
         address: '500 17th St,',
         city: 'Miami Beach, FL 33139',
-        location: {lat: 25.791650, lng: -80.133487}
+        lat: 25.791650,
+        lng: -80.133487
     },
     {
         name: 'South Pointe Pier',
         address: '1 Washington Ave,',
         city: 'Miami Beach, FL 33139',
-        location: {lat: 25.763782, lng: -80.130180}
+        lat: 25.763782,
+        lng: -80.130180
     },
     {
         name: 'The Filmore Miami Beach',
         address: '1700 Washington Ave,',
         city: 'Miami Beach, FL 33139',
-        location: {lat: 25.792922, lng: -80.133085}
+        lat: 25.792922,
+        lng: -80.133085
     },
     {
         name: 'Yardbird Southern Table & Bar',
         address: '1600 Lenox Ave,',
         city: 'Miami Beach, FL 33139',
-        location: {lat: 25.789117, lng: -80.140205}
+        lat: 25.789117,
+        lng: -80.140205
     },
     {
         name: 'Flamingo Park',
         address: '1200 Meridian Ave,',
         city: 'Miami Beach, FL 33139',
-        location: {lat: 25.783964, lng: -80.137317}
+        lat: 25.783964,
+        lng: -80.137317
     },
     {
         name: "Joe's Stone Crab",
         address: '11 Washington Ave,',
         city: 'Miami Beach, FL 33139',
-        location: {lat: 25.768871, lng: -80.135259}
+        lat: 25.768871,
+        lng: -80.135259
     }
 ];
 
@@ -86,17 +97,18 @@ function initMap() {
     // The following group uses the location array to create an array of markers on initialize.
     for (var i = 0; i < initialLocations.length; i++) {
         
-        // Get the position from the location array.
-        var position = initialLocations[i].location;
-        var title = initialLocations[i].name;
+        var myLat = initialLocations[i].lat;
+        var myLng = initialLocations[i].lng;
+        var name = initialLocations[i].name;
         var address = initialLocations[i].address;
         var city = initialLocations[i].city;
 
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
             map: map,
-            position: position,
-            title: title,
+            position: new google.maps.LatLng(myLat, myLng),
+            // position: {lat: myLat, lng: myLng},
+            title: name,
             address: address,
             city: city,
             animation: google.maps.Animation.DROP,
@@ -127,8 +139,6 @@ function initMap() {
         map.fitBounds(bounds);
 }
 
-
-
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
@@ -147,8 +157,9 @@ function populateInfoWindow(marker, infowindow) {
 var Location = function(data) {
     this.name = ko.observable(data.name);
     this.address = ko.observable(data.address);
-    this.lat = ko.observable(data.location.lat);
-    this.lng = ko.observable(data.location.lng);
+    this.lat = ko.observable(data.lat);
+    this.lng = ko.observable(data.lng);
+
 };
 
 // Use knockout to show the locations
@@ -167,6 +178,7 @@ var ViewModel = function() {
             return self.locationList();
         } else {
             var updatedLocation = self.locationList().filter(location => location.name().toLowerCase().indexOf(self.query().toLowerCase()) > -1);
+            console.log(updatedLocation);
             updateMap(updatedLocation);
             return updatedLocation;
         }
@@ -179,39 +191,42 @@ function updateMap(updatedLocation) {
     var largeInfowindow = new google.maps.InfoWindow();
     var bounds = new google.maps.LatLngBounds();
 
-    // console.log(updatedLocation);
+    // console.dir(updatedLocation);
     for (var i = 0; i < updatedLocation.length; i++) {
-        //Get the position from the location array.
-        var position = updatedLocation[i].location;
-        var title = updatedLocation[i].title;
+        // console.log(updatedLocation[i].name.toString());
+
+        var myLat = updatedLocation[i].lat;
+        var myLng = updatedLocation[i].lng;
+        var name = updatedLocation[i].name;
         var address = updatedLocation[i].address;
         var city = updatedLocation[i].city;
         // console.log(updatedLocation[i]);
 
-            //Create a marker per location, and put into markers array.
-    var marker = new google.maps.Marker({
-        map: map,
-        position: position,
-        title: title,
-        address: address,
-        city: city,
-        animation: google.maps.Animation.DROP,
-        id: i
-    });
+        //Create a marker per location, and put into markers array.
+        var marker = new google.maps.Marker({
+            map: map,
+            position: new google.maps.LatLng(myLat, myLng),
+            title: name,
+            address: address,
+            city: city,
+            animation: google.maps.Animation.DROP,
+            id: i
+        });
 
-                // Push the marker to our array of markers.
-                markers.push(marker);
+        // Push the marker to our array of markers.
+        markers.push(marker);
 
-                // Create an onclick event to open an infowindow at each marker.
-                marker.addListener('click', function() {
-                    populateInfoWindow(this, largeInfowindow);
-                });
+        // Create an onclick event to open an infowindow at each marker.
+        marker.addListener('click', function() {
+            // console.log(this);
+            populateInfoWindow(this, largeInfowindow);
+        });
         
-                bounds.extend(markers[i].position);
+        bounds.extend(markers[i].position);
     }
 
-// Extend the boundaries of the map for each marker
-        map.fitBounds(bounds);
+    // Extend the boundaries of the map for each marker
+    map.fitBounds(bounds);
 
 }
 ko.applyBindings(new ViewModel());
