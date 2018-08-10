@@ -144,51 +144,7 @@ var initialLocations = [
 ];
 
 
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 25.790705, lng: -80.137989},
-        zoom: 14
-    });
 
-    var largeInfowindow = new google.maps.InfoWindow();
-    var bounds = new google.maps.LatLngBounds();
-
-
-    // The following group uses the location array to create an array of markers on initialize.
-    for (var i = 0; i < initialLocations.length; i++) {
-        
-        var myLat = initialLocations[i].lat;
-        var myLng = initialLocations[i].lng;
-        var name = initialLocations[i].name;
-        var address = initialLocations[i].address;
-        var city = initialLocations[i].city;
-
-        // Create a marker per location, and put into markers array.
-        var marker = new google.maps.Marker({
-            map: map,
-            position: new google.maps.LatLng(myLat, myLng),
-            // position: {lat: myLat, lng: myLng},
-            title: name,
-            address: address,
-            city: city,
-            animation: google.maps.Animation.DROP,
-            id: i
-        });
-
-        // Push the marker to our array of markers.
-        markers.push(marker);
-
-        // Create an onclick event to open an infowindow at each marker.
-        marker.addListener('click', function() {
-            populateInfoWindow(this, largeInfowindow);
-        });
-
-        bounds.extend(markers[i].position);
-    }
-
-    // Extend the boundaries of the map for each marker
-    map.fitBounds(bounds);
-}
 
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
