@@ -149,14 +149,14 @@ var initialLocations = [
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
-      infowindow.marker = marker;
-      infowindow.setContent('<div>' + '<strong>' + marker.title + '</strong>' +'</div>' + '<div>' + marker.address + '</div>' + '<div>' + marker.city + '</div>');
-      infowindow.open(map, marker);
+        infowindow.marker = marker;
+        infowindow.setContent('<div>' + '<strong>' + marker.title + '</strong>' +'</div>' + '<div>' + marker.address + '</div>' + '<div>' + marker.city + '</div>');
+        infowindow.open(map, marker);
       
-      // Make sure the marker property is cleared if the infowindow is closed.
-      infowindow.addListener('closeclick',function(){
-        infowindow.setMarker = null;
-      });
+        // Make sure the marker property is cleared if the infowindow is closed.
+        infowindow.addListener('closeclick',function(){
+            infowindow.setMarker = null;
+        });
     }
 }
 
