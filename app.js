@@ -4,7 +4,7 @@
 var map;
 var infoWindowCurrent;
 var markerLastClicked;
-
+var largeInfowindow;
 
 // Create a new blank array for all the listing markers.
 var markers = [];
@@ -60,6 +60,8 @@ var Location = function(data) {
         address: self.address,
         animation: google.maps.Animation.DROP,
     });
+    
+    largeInfowindow = new google.maps.InfoWindow();
 
 
     self.marker.addListener('click', function() {
