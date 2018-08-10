@@ -22,7 +22,7 @@
     <aside class="hidden-menu">
         <h2>Locations</h2>
         <div>
-            <input data-bind="value: query, valueUpdate: 'keyup'" placeholder="favorite location"/>
+            <input data-bind="textInput: query, valueUpdate: 'keyup'" placeholder="favorite location"/>
         </div>
     
         <ul data-bind="foreach: filteredLocations ">
@@ -38,6 +38,6 @@
     <script type="text/javascript" src="node_modules/knockout/build/output/knockout-latest.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsOZ83svAULg4DhOPoqlYrv1w8Ds2TB8I&callback=initMap"></script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsOZ83svAULg4DhOPoqlYrv1w8Ds2TB8I&callback=init"></script>
 </body>
 </html>
