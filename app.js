@@ -7,12 +7,13 @@ var infoWindowCurrent;
 var markerLastClicked = null;
 
 // keys
-var CLIENT_ID = 'I5RRNZEY02CWKRWNRHFC1TGC52N2DHK2XG1OF3FOTHKKMRAB';
-var CLIENT_SECRET = 'PZMUAOC4N2IFNRWWCEZIMWWHC40WQS0Q0PGB2DWUH0ZKZOAN';
+var CLIENT_ID = 'TTGRJJHD0KIUI5C3XXIMB0WYTOAT3AOHYCOKEFRGYDHMQQDS';
+var CLIENT_SECRET = 'QRC5I51IMSGYUB3TXKOVRUFDXVZERYTSZOU4VYCM1GRMGYP5';
 
 function init(){
     ko.applyBindings(new ViewModel());
 }
+
 
 // Use knockout to show the locations
 var ViewModel = function() {
@@ -55,13 +56,12 @@ var Location = function(data) {
     //load data from the server 
     $.getJSON(url).done(function(data) {
         var fourSquareData = data.response.venues[0];
-        self.hasPerk = fourSquareData.hasPerk;
         self.address = fourSquareData.location.formattedAddress.join(', ');
         self.category = fourSquareData.categories[0].shortName;
         self.lat = fourSquareData.location.lat;
         self.lng = fourSquareData.location.lng;
     }).fail(function() {
-        alert('There was an error occured with the Foursquare API. Please try again later.');
+        alert('The Foursquare API has an error.Try again later.');
     });
 
     // Create a marker per location, and put into markers array.
