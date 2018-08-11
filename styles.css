@@ -20,8 +20,8 @@ html, body {
 */
 .hamburger {
     position: absolute;
-    top: 8px;
-    left: 8px;
+    top: 48px;
+    left: 14px;
     height: 45px;
     z-index: 5;
     background-color: #AE80FA;
@@ -41,9 +41,7 @@ html, body {
 }
 
 
-/**
-Animations
-**/
+/* Animations */
 #toggle:checked + .hamburger .top-bun {
     transform: rotate(-45deg);
     margin-top: 25px;
@@ -68,18 +66,17 @@ Animations
 .hidden-menu {
     display: block;
     position: fixed;
-    margin: 0;
     box-sizing: border-box;
-    width: 300px;
+    width: 250px;
     background-color: #eee;
     height: 100%;
     padding-top:100px;
-    top: 0;
-    left: -300px;
+    top: 48px;
+    left: -250px;
     transition: left .2s;
     z-index: 2;
-    -webkit-transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
 .hidden-menu h2 {
@@ -94,18 +91,19 @@ Animations
     text-align: center;
 }
 
-/*  show menu when hamburger clicked  */
+/* show menu when hamburger clicked */
 #toggle:checked ~ .hidden-menu {
     left: 0;
 }
 
+/*Foresquare credit*/
 .foursquare {
     background-color: #fff;
-    color: #AE80FA;
-    font-size: 24px;
+    color: black;
+    font-size: 16px;
     position: absolute;
     right: 50px;
-    top: 8px;
+    top: 12px;
     text-align: center;
     width: 120px;
     z-index: 1;

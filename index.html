@@ -20,7 +20,7 @@
     
     
     <aside class="hidden-menu">
-        <h2>Locations</h2>
+        <h2>South Beach Locations</h2>
         <div>
             <input data-bind="textInput: query, valueUpdate: 'keyup'" placeholder="Filter Location"/>
         </div>
@@ -40,6 +40,6 @@
     <script type="text/javascript" src="node_modules/knockout/build/output/knockout-latest.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsOZ83svAULg4DhOPoqlYrv1w8Ds2TB8I&callback=init"></script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsOZ83svAULg4DhOPoqlYrv1w8Ds2TB8I&callback=init" onerror="googleMapsError()"></script>
 </body>
 </html>

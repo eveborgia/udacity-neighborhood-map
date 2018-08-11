@@ -1,116 +1,22 @@
 /*eslint no-unused-vars: "null"*/
 /*global google, ko, $ */
-
-var map;
-var infoWindow;
-var infoWindowCurrent;
-var markerLastClicked = null;
-
-// keys
-var CLIENT_ID = 'TTGRJJHD0KIUI5C3XXIMB0WYTOAT3AOHYCOKEFRGYDHMQQDS';
-var CLIENT_SECRET = 'QRC5I51IMSGYUB3TXKOVRUFDXVZERYTSZOU4VYCM1GRMGYP5';
-
-function init(){
-    ko.applyBindings(new ViewModel());
-}
+(function () {
+    'use strict';
+    // this function is strict...
+}());
 
 
-// Use knockout to show the locations
-var ViewModel = function() {
-    var self = this;
+let map;
+let infoWindow;
+let infoWindowCurrent;
+let markerLastClicked = null;
 
-    self.locationList = ko.observableArray([]);
-    self.query = ko.observable('');
+// Foresquare API keys
+const CLIENT_ID = 'TTGRJJHD0KIUI5C3XXIMB0WYTOAT3AOHYCOKEFRGYDHMQQDS';
+const CLIENT_SECRET = 'QRC5I51IMSGYUB3TXKOVRUFDXVZERYTSZOU4VYCM1GRMGYP5';
 
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 25.790705, lng: -80.137989},
-        zoom: 14
-    });
-
-    initialLocations.forEach(function(data) {
-        self.locationList.push(new Location(data));
-    });
-
-    self.filteredLocations = ko.computed(function() {
-        return this.locationList().filter(function(location) {
-            var isMatched = location.nameNormalized.indexOf(this.query().toLowerCase()) !== -1;
-            location.marker.setVisible(isMatched);
-            
-            return isMatched;
-        }, this);
-    }, this);
-};
-
-// Location Model
-var Location = function(data) {
-    var self = this;
-
-    self.name = data.name;
-    self.nameNormalized = data.name.toLowerCase();
-
-    var url = 'https://api.foursquare.com/v2/venues/search?client_id=' + CLIENT_ID
-     + '&client_secret=' + CLIENT_SECRET + '&ll=' + data.lat + ',' + data.lng
-     + '&v=20180809&&query=' + data.name;
-
-    // console.log(url);
-    //load data from the server 
-    $.getJSON(url).done(function(data) {
-        var fourSquareData = data.response.venues[0];
-        self.address = fourSquareData.location.formattedAddress.join(', ');
-        self.category = fourSquareData.categories[0].shortName;
-        self.lat = fourSquareData.location.lat;
-        self.lng = fourSquareData.location.lng;
-    }).fail(function() {
-        alert('The Foursquare API has an error. Try again later.');
-    });
-
-    // Create a marker per location, and put into markers array.
-    self.marker = new google.maps.Marker({
-        map: map,
-        position: new google.maps.LatLng(data.lat, data.lng),
-        title: self.name,
-        animation: google.maps.Animation.DROP
-    });
-
-    self.marker.addListener('click', function() {
-        if (infoWindowCurrent) {
-            infoWindowCurrent.close();
-        }
-
-        var cancelAnimation = function() {
-            markerLastClicked.setAnimation(null);
-            markerLastClicked = null;
-        };
-
-        if (markerLastClicked) {
-            cancelAnimation();
-        }
-
-        var infoWindowContent = [
-            '<div class="info-window">',
-            '<h4>', self.name, '</h4>',
-            '<p>', self.address, '</p>',
-            '<p>Category: ', self.category, '</p>',
-            '</div>'
-        ];
-
-        var infoWindow = new google.maps.InfoWindow({ content: infoWindowContent.join('') });
-        infoWindowCurrent = infoWindow;
-
-        infoWindow.open(map, self.marker);
-        self.marker.setAnimation(google.maps.Animation.BOUNCE);
-        markerLastClicked = self.marker;
-
-        google.maps.event.addListener(infoWindow, 'closeclick', cancelAnimation);
-    });
-
-    self.clickLocationName = function() {
-        google.maps.event.trigger(self.marker, 'click');
-    };
-};
-
-//These are the South Beach locations that will be shown to the user.
-var initialLocations = [
+//South Beach locations that will be shown to the user.
+const initialLocations = [
     {
         name: 'Meat Market',
         lat: 25.790705,
@@ -162,3 +68,113 @@ var initialLocations = [
         lng: -80.135259
     }
 ];
+
+
+// ViewModel - Use knockout to show the locations
+const ViewModel = function() {
+    let self = this;
+
+    self.locationList = ko.observableArray([]);
+    self.query = ko.observable('');
+
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 25.790705, lng: -80.137989},
+        zoom: 14
+    });
+
+    initialLocations.forEach(function(data) {
+        self.locationList.push(new Location(data));
+    });
+
+    //Credit: http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html
+    self.filteredLocations = ko.computed(function() {
+        return this.locationList().filter(function(location) {
+            var isMatched = location.nameNormalized.indexOf(this.query().toLowerCase()) !== -1;
+            location.marker.setVisible(isMatched);
+            return isMatched;
+        }, this);
+    }, this);
+};
+
+// Location Model
+const Location = function(data) {
+    let self = this;
+
+    self.name = data.name;
+    self.nameNormalized = data.name.toLowerCase();
+
+    //Load data from the server get Json request for Forsquare data
+    const url = 'https://api.foursquare.com/v2/venues/search?client_id=' + CLIENT_ID
+     + '&client_secret=' + CLIENT_SECRET + '&ll=' + data.lat + ',' + data.lng
+     + '&v=20180809&&query=' + data.name;
+
+    $.getJSON(url).done(function(data) {
+        var fourSquareData = data.response.venues[0];
+        self.address = fourSquareData.location.formattedAddress;
+        self.category = fourSquareData.categories[0].shortName;
+        self.lat = fourSquareData.location.lat;
+        self.lng = fourSquareData.location.lng;
+    // Handle in case Foresquare has an error
+    }).fail(function() {
+        alert('The Foursquare API has an error. Try again later.');
+    });
+
+    // Create marker per location
+    self.marker = new google.maps.Marker({
+        map: map,
+        position: new google.maps.LatLng(data.lat, data.lng),
+        title: self.name,
+        animation: google.maps.Animation.DROP
+    });
+
+    // On click event when you click on the marker to show the InfoWindow
+    self.marker.addListener('click', function() {
+        if (infoWindowCurrent) {
+            infoWindowCurrent.close();
+        }
+
+        const cancelAnimation = function() {
+            markerLastClicked.setAnimation(null);
+            markerLastClicked = null;
+        };
+
+        if (markerLastClicked) {
+            cancelAnimation();
+        }
+
+        // Info Window  
+        const infoWindowContent = [
+            '<div class="info-window">',
+            '<h4>', self.name, '</h4>',
+            '<p>', self.address[0], '</p>',
+            '<p>', self.address[1], '</p>',
+            '<p>', self.address[2], '</p>',
+            '<p>Category: ', self.category, '</p>',
+            '</div>'
+        ];
+
+        let infoWindow = new google.maps.InfoWindow({ content: infoWindowContent.join('') });
+        infoWindowCurrent = infoWindow;
+
+        // Bounce when click on marker
+        infoWindow.open(map, self.marker);
+        self.marker.setAnimation(google.maps.Animation.BOUNCE);
+        markerLastClicked = self.marker;
+
+        google.maps.event.addListener(infoWindow, 'closeclick', cancelAnimation);
+    });
+
+    // When clicked on Location Filter open the info window
+    self.clickLocationName = function() {
+        google.maps.event.trigger(self.marker, 'click');
+    };
+};
+
+// Alert if google map errors
+function googleMapsError() {
+    alert('Google Maps error. Please refresh the page and try again!');
+}
+
+function init(){
+    ko.applyBindings(new ViewModel());
+}
