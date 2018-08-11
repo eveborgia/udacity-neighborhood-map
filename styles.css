@@ -14,7 +14,6 @@ html, body {
     display: none;
 }
 
-
 /* Hamburger
 * Credit: https://codepen.io/vinsongrant/post/css-only-hamburger-animation
 */
@@ -40,7 +39,6 @@ html, body {
     transition: all 0.3s ease-in-out;
 }
 
-
 /* Animations */
 #toggle:checked + .hamburger .top-bun {
     transform: rotate(-45deg);
@@ -56,7 +54,6 @@ html, body {
 }
 
 /* Menu */
-
 /* hide the checkbox */
 .hidden-menu-checkbox {
     display: none;
@@ -89,6 +86,12 @@ html, body {
     margin: auto;
     padding: 4px;
     text-align: center;
+}
+
+.hidden-menu ul li {
+    line-height: 180%;
+    text-decoration: underline;
+    text-decoration-color: #AE80FA;
 }
 
 /* show menu when hamburger clicked */

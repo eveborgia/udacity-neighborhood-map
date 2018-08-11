@@ -1,10 +1,10 @@
 /*eslint no-unused-vars: "null"*/
 /*global google, ko, $ */
+
 (function () {
     'use strict';
     // this function is strict...
 }());
-
 
 let map;
 let infoWindow;

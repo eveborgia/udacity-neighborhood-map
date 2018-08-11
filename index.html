@@ -15,16 +15,14 @@
         <div class="top-bun"></div>
         <div class="meat"></div>
         <div class="bottom-bun"></div>
-
     </label>
-    
-    
+
     <aside class="hidden-menu">
         <h2>South Beach Locations</h2>
         <div>
             <input data-bind="textInput: query, valueUpdate: 'keyup'" placeholder="Filter Location"/>
         </div>
-    
+
         <ul data-bind="foreach: filteredLocations ">
             <li data-bind="text: $data.name, click: clickLocationName"></li>
         </ul>
@@ -33,7 +31,7 @@
     <aside class="foursquare">
         <div>Source: Forsquare</div>
     </aside>
-        
+
     <main id="map" class="map"></main>
 
     <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
