@@ -61,7 +61,7 @@ var Location = function(data) {
         self.lat = fourSquareData.location.lat;
         self.lng = fourSquareData.location.lng;
     }).fail(function() {
-        alert('The Foursquare API has an error.Try again later.');
+        alert('The Foursquare API has an error. Try again later.');
     });
 
     // Create a marker per location, and put into markers array.
