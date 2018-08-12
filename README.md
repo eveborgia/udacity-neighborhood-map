@@ -14,7 +14,11 @@ Interacting with NPM, and API servers is the primary function of Front-End Web D
 Use of third-party libraries and APIs is a standard and acceptable practice that is encouraged.
 Asynchronous programming is important to understand in today's market. Using modern technologies like eslint, google maps api and jquery enrich development experience that can extended to many new and future projects.
 
-
+##Run the app
+1. Run `git clone https://github.com/eveborgia/udacity-neighborhood-map.git` in your terminal or download the zip file from github.com.
+2. Change into directory, and Run `npm install` in your terminal.
+3. Please put your own Google Api Key in index.html and our own Foresquare Api CLIENT_ID and CLIENT_SECRET. 
+4. Open up index.html in your browser.
 
 ###The repository contains:
 

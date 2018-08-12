@@ -61,6 +61,7 @@ html, body {
 
 /* Menu */
 .hidden-menu {
+    overflow: scroll;
     display: block;
     position: fixed;
     box-sizing: border-box;

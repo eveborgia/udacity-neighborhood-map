@@ -70,7 +70,7 @@ const initialLocations = [
 ];
 
 
-// ViewModel - Use knockout to show the locations
+// ViewModel
 const ViewModel = function() {
     let self = this;
 
@@ -88,8 +88,9 @@ const ViewModel = function() {
 
     //Credit: http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html
     self.filteredLocations = ko.computed(function() {
+        let loc = this.query().toLowerCase();
         return this.locationList().filter(function(location) {
-            var isMatched = location.nameNormalized.indexOf(this.query().toLowerCase()) !== -1;
+            var isMatched = location.nameNormalized.indexOf(loc) !== -1;
             location.marker.setVisible(isMatched);
             return isMatched;
         }, this);
@@ -108,16 +109,17 @@ const Location = function(data) {
      + '&client_secret=' + CLIENT_SECRET + '&ll=' + data.lat + ',' + data.lng
      + '&v=20180809&&query=' + data.name;
 
-    $.getJSON(url).done(function(data) {
-        var fourSquareData = data.response.venues[0];
-        self.address = fourSquareData.location.formattedAddress;
-        self.category = fourSquareData.categories[0].shortName;
-        self.lat = fourSquareData.location.lat;
-        self.lng = fourSquareData.location.lng;
-    // Handle in case Foresquare has an error
-    }).fail(function() {
-        alert('The Foursquare API has an error. Try again later.');
-    });
+    $.getJSON(url)
+        .done(function(data) {
+            var fourSquareData = data.response.venues[0];
+            self.address = fourSquareData.location.formattedAddress;
+            self.category = fourSquareData.categories[0].shortName;
+            self.lat = fourSquareData.location.lat;
+            self.lng = fourSquareData.location.lng;
+        // Handle in case Foresquare has an error
+        }).fail(function() {
+            alert('The Foursquare API has an error. Try again later.');
+        });
 
     // Create marker per location
     self.marker = new google.maps.Marker({
@@ -159,8 +161,11 @@ const Location = function(data) {
         // Bounce when click on marker
         infoWindow.open(map, self.marker);
         self.marker.setAnimation(google.maps.Animation.BOUNCE);
-        markerLastClicked = self.marker;
+        setTimeout(function() {
+            self.marker.setAnimation(null);
+        }, 2000);
 
+        markerLastClicked = self.marker;
         google.maps.event.addListener(infoWindow, 'closeclick', cancelAnimation);
     });
 
