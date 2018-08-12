@@ -1,5 +1,5 @@
-/*eslint no-unused-vars: "null"*/
-/*global google, ko, $ */
+/* eslint no-unused-vars: "null" */
+/* global google, ko, $ */
 
 (function () {
     'use strict';

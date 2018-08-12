@@ -9,18 +9,19 @@
 </head>
 
 <body>
-    <input id="toggle" type="checkbox" class="hidden-menu-checkbox"></input>
+    <input id="toggle" type="checkbox" class="hidden-menu-checkbox">
 
     <label for="toggle" class="hamburger">
         <div class="top-bun"></div>
         <div class="meat"></div>
         <div class="bottom-bun"></div>
+
     </label>
 
     <aside class="hidden-menu">
         <h2>South Beach Locations</h2>
         <div>
-            <input data-bind="textInput: query, valueUpdate: 'keyup'" placeholder="Filter Location"/>
+            <input data-bind="textInput: query," placeholder="Filter Location"/>
         </div>
 
         <ul data-bind="foreach: filteredLocations ">
@@ -31,12 +32,12 @@
     <aside class="foursquare">
         <div>Source: Forsquare</div>
     </aside>
-
+        
     <main id="map" class="map"></main>
 
-    <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
-    <script type="text/javascript" src="node_modules/knockout/build/output/knockout-latest.js"></script>
-    <script type="text/javascript" src="app.js"></script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/knockout/build/output/knockout-latest.js"></script>
+    <script src="app.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsOZ83svAULg4DhOPoqlYrv1w8Ds2TB8I&callback=init" onerror="googleMapsError()"></script>
 </body>
