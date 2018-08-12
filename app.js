@@ -105,9 +105,7 @@ const Location = function(data) {
     self.nameNormalized = data.name.toLowerCase();
 
     //Load data from the server get Json request for Forsquare data
-    const url = 'https://api.foursquare.com/v2/venues/search?client_id=' + CLIENT_ID
-     + '&client_secret=' + CLIENT_SECRET + '&ll=' + data.lat + ',' + data.lng
-     + '&v=20180809&&query=' + data.name;
+    const url = 'https://api.foursquare.com/v2/venues/search?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&ll=' + data.lat + ',' + data.lng + '&v=20180809&&query=' + data.name;
 
     $.getJSON(url)
         .done(function(data) {
