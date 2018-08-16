@@ -12,8 +12,8 @@ let infoWindowCurrent;
 let markerLastClicked = null;
 
 // Foresquare API keys
-const CLIENT_ID = 'TTGRJJHD0KIUI5C3XXIMB0WYTOAT3AOHYCOKEFRGYDHMQQDS';
-const CLIENT_SECRET = 'QRC5I51IMSGYUB3TXKOVRUFDXVZERYTSZOU4VYCM1GRMGYP5';
+const CLIENT_ID = 'your_client-id';
+const CLIENT_SECRET = 'your_client_secret';
 
 //South Beach locations that will be shown to the user.
 const initialLocations = [
@@ -111,7 +111,7 @@ const Location = function(data) {
         .done(function(data) {
             var fourSquareData = data.response.venues[0];
             self.address = fourSquareData.location.formattedAddress;
-            self.category = fourSquareData.categories[0].shortName;
+            self.category = fourSquareData.categories[0].shortName;it
             self.lat = fourSquareData.location.lat;
             self.lng = fourSquareData.location.lng;
         // Handle in case Foresquare has an error
